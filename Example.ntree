@@ -1,0 +1,29 @@
+#functions
+
+LookAtCharacter(A)
+PlaySound(B)
+
+#characters
+
+Jim
+Johnson
+Alex
+Phil
+
+#section 0
+
+//Introduce characters
+Jim: Hello, my name is jim.
+Alex: no it isn't!
+
+#section 1
+
+Phil: Whattup my slime
+Alex: Nothin' much
+
+#section 2
+
+Johnson: My balls hurt man.
+Alex: fix it!
+Phil: Yeah idiot!
+jim: GRAAAHHHHH!
