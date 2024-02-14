@@ -31,6 +31,15 @@ namespace NTree
 		//Retrieves lines of all sections.
 		static void GetTreeSections(const std::vector<std::string>& Lines, std::vector<std::vector<std::string>>* Sections);
 
+		//Retrieves the character name and dialogue from a line.
+		static void ParseDialogue(const std::string& Line, std::string* Character, std::string* Speech);
+
+		//Retrieves the function name and parameters from a line.
+		static void ParseFunction(const std::string& Line, std::string* Function, std::vector<std::string>* Parameters);
+
+		//Removes all whitespace from the input string.
+		static std::string RemoveWhitespace(const std::string& Str);
+
 		//Utilities
 
 		static std::string ToLower(const std::string& Str);

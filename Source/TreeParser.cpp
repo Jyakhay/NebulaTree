@@ -31,7 +31,44 @@ namespace NTree
 		std::vector<std::vector<std::string>> Sections;
 		GetTreeSections(TreeLines, &Sections);
 
-		return Tree();
+		Tree ReturnValue;
+
+		for(auto& CharacterString : CharacterBody)
+		{
+			ReturnValue.Characters.push_back(Character(CharacterString));
+		}
+
+		for(const auto& CurSection : Sections)
+		{
+			Section NewSection;
+			NewSection.Body = CurSection;
+
+			for(const auto& CurLine : NewSection.Body)
+			{
+				if(CurLine.find(':') != -1)
+				{
+					std::string CharacterName;
+					std::string Speech;
+
+					ParseDialogue(CurLine, &CharacterName, &Speech);
+
+					NewSection.Dialogue.push_back(Dialogue(ReturnValue.GetCharacterByName(CharacterName), Speech));
+				}
+				else
+				{
+					std::string FunctionID;
+					std::vector<std::string> Parameters;
+
+					ParseFunction(CurLine, &FunctionID, &Parameters);
+
+					NewSection.FunctionCalls.push_back(Function(FunctionID, Parameters));
+				}
+			}
+
+			ReturnValue.Sections.push_back(NewSection);
+		}
+
+		return ReturnValue;
 	}
 
 	void TreeParser::RemoveEmptyLines(std::vector<std::string>& Lines)
@@ -149,6 +186,70 @@ namespace NTree
 			}
 		}
 
+	}
+
+	void TreeParser::ParseDialogue(const std::string& Line, std::string* Character, std::string* Speech)
+	{
+		const int NameEndIndex = Line.find(':');
+
+		if(NameEndIndex != -1)
+		{
+			*Character = Line.substr(0, NameEndIndex);
+		}
+
+		const std::string SpeechSection = Line.substr(NameEndIndex + 1, Line.length() - NameEndIndex);
+		int SpeechStartIndex = -1;
+
+		for(int i = 0; i < SpeechSection.length(); i++)
+		{
+			if(SpeechSection[i] != ' ')
+			{
+				SpeechStartIndex = i;
+				break;
+			}
+		}
+
+		if(SpeechStartIndex != -1)
+		{
+			*Speech = SpeechSection.substr(SpeechStartIndex, SpeechSection.length() - SpeechStartIndex);
+		}
+
+	}
+
+	void TreeParser::ParseFunction(const std::string& Line, std::string* Function, std::vector<std::string>* Parameters)
+	{
+		const int FunctionEndIndex = Line.find('(');
+
+		if(FunctionEndIndex != -1)
+		{
+			*Function = Line.substr(0, FunctionEndIndex);
+
+			const std::string ParameterList = Line.substr(FunctionEndIndex + 1, Line.length() - FunctionEndIndex - 2);
+
+			std::stringstream Stream;
+			Stream << ParameterList;
+
+			std::string CurrentParameter;
+			while(std::getline(Stream, CurrentParameter, ','))
+			{
+				Parameters->push_back(RemoveWhitespace(CurrentParameter));
+			}
+		}
+	}
+
+	std::string TreeParser::RemoveWhitespace(const std::string& Str)
+	{
+		std::string ReturnValue = Str;
+
+		for(int i = Str.size() - 1; i >= 0; i--)
+		{
+			if(Str[i] == ' ')
+			{
+				ReturnValue.erase(ReturnValue.begin() + i);
+			}
+		}
+
+		return ReturnValue;
 	}
 
 	std::string TreeParser::ToLower(const std::string& Str)

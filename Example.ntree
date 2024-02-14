@@ -18,12 +18,13 @@ Alex: no it isn't!
 
 #section 1
 
-Phil: Whattup my slime
-Alex: Nothin' much
+Phil: Hello, I am phil. What's going on?
+Alex: Nothing much.
 
 #section 2
 
-Johnson: My balls hurt man.
-Alex: fix it!
-Phil: Yeah idiot!
-jim: GRAAAHHHHH!
+Johnson: Who're you?
+
+LookAtCharacter(Alex, Jim)
+
+Jim: My name is Jim!

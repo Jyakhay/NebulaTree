@@ -9,6 +9,13 @@ set(ROOT_SOURCES
     "TreeParser.cpp"
     "TreeParser.h"
     "Main.cpp"
+    "Character.cpp"
+    "Character.h"
+    "Section.cpp"
+    "Section.h"
+    "Dialogue.cpp"
+    "Dialogue.h"
+    "Function.h"
 
 )
 
