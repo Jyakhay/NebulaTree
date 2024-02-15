@@ -10,8 +10,15 @@ namespace NTree
 	struct Section
 	{
 
+		void Next();
+		void Previous();
+
+		void GoToLine(int Index);
+
 		bool IsCurrentLineDialogue();
 		bool IsCurrentLineFunction();
+
+		Dialogue GetCurrentDialogue() const {return Dialogue[DialogueIndex];}
 
 		std::vector<std::string> Body;
 

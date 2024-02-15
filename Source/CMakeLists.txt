@@ -15,7 +15,10 @@ set(ROOT_SOURCES
     "Section.h"
     "Dialogue.cpp"
     "Dialogue.h"
+    "Function.cpp"
     "Function.h"
+    "FunctionBinds.cpp"
+    "FunctionBinds.h"
 
 )
 
