@@ -2,16 +2,27 @@
 
 #include <fstream>
 #include <sstream>
-
 #include <string>
+
 #include "Tree.h"
 #include "TreeParser.h"
+#include "FunctionBinds.h"
 
-NTree::Tree TreeFromFile(const std::string& Path)
+namespace NTree
 {
-    std::ifstream Filestream(Path);
-    std::stringstream FileBufferStream;
-    FileBufferStream << Filestream.rdbuf();
 
-    return NTree::TreeParser::ParseString(FileBufferStream.str());
+    inline Tree TreeFromFile(const std::string& Path)
+    {
+        const std::ifstream FileStream(Path);
+        std::stringstream FileBufferStream;
+        FileBufferStream << FileStream.rdbuf();
+
+        return TreeParser::ParseString(FileBufferStream.str());
+    }
+
+    inline void BindFunction(const std::string& FunctionID, const CallbackFunction& Callback)
+    {
+        FunctionBinder::BindFunction(FunctionID, Callback);
+    }
+
 }

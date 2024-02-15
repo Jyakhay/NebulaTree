@@ -7,23 +7,27 @@ namespace NTree
 
 	void Section::Next()
 	{
+
+		m_CurrentLine++;
+
 		if(IsCurrentLineFunction())
 		{
-			Function CurrentFunction = FunctionCalls[FunctionIndex];
-			FunctionBinder::ExecuteFunction(CurrentFunction.FunctionID, CurrentFunction.Parameters);
+			const Function CurrentFunction = m_FunctionCalls[m_FunctionIndex];
+			FunctionBinder::ExecuteFunction(CurrentFunction.GetFunctionID(), m_OwningTree, CurrentFunction.GetParameters());
 
-			FunctionIndex++;
+			m_FunctionIndex++;
+
 			Next();
 
 			return;
 		}
 
-		DialogueIndex++;
+		m_DialogueIndex++;
 	}
 
 	bool Section::IsCurrentLineDialogue()
 	{
-		return Body[CurrentLine].find(':') != -1;
+		return m_Body[m_CurrentLine].find(':') != -1;
 	}
 
 	bool Section::IsCurrentLineFunction()

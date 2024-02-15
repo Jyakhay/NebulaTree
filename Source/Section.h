@@ -7,28 +7,42 @@
 
 namespace NTree
 {
+	struct Tree;
+}
+
+namespace NTree
+{
 	struct Section
 	{
 
-		void Next();
-		void Previous();
+	public:
 
-		void GoToLine(int Index);
+		void Next();
 
 		bool IsCurrentLineDialogue();
 		bool IsCurrentLineFunction();
 
-		Dialogue GetCurrentDialogue() const {return Dialogue[DialogueIndex];}
+		Dialogue GetCurrentDialogue() const {return m_Dialogue[m_DialogueIndex];}
+		Tree* GetOwningTree() const { return m_OwningTree; }
 
-		std::vector<std::string> Body;
+		const std::vector<std::string>& GetBody() const { return m_Body; }
+		const std::vector<Dialogue>& GetDialogue() const { return m_Dialogue; }
+		const std::vector<Function>& GetFunctionCalls() const { return m_FunctionCalls; }
 
-		std::vector<Dialogue> Dialogue;
-		std::vector<Function> FunctionCalls;
+	private:
 
-		int CurrentLine = 0;
+		Tree* m_OwningTree;
 
-		int DialogueIndex = 0;
-		int FunctionIndex = 0;
+		std::vector<std::string> m_Body;
+		std::vector<Dialogue> m_Dialogue;
+		std::vector<Function> m_FunctionCalls;
+
+		int m_CurrentLine = 0;
+		int m_DialogueIndex = 0;
+		int m_FunctionIndex = 0;
+
+		friend struct Tree;
+		friend class TreeParser;
 
 	};
 }

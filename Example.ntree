@@ -1,7 +1,7 @@
 #functions
 
-LookAtCharacter(A)
-PlaySound(B)
+LookAtCharacter(Character)
+PlaySound(SoundPath)
 
 #characters
 
@@ -12,8 +12,8 @@ Phil
 
 #section 0
 
-//Introduce characters
 Jim: Hello, my name is jim.
+LookAtCharacter(Jim)
 Alex: no it isn't!
 
 #section 1
@@ -24,7 +24,5 @@ Alex: Nothing much.
 #section 2
 
 Johnson: Who're you?
-
-LookAtCharacter(Alex, Jim)
-
 Jim: My name is Jim!
+

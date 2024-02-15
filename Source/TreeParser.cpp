@@ -35,15 +35,15 @@ namespace NTree
 
 		for(auto& CharacterString : CharacterBody)
 		{
-			ReturnValue.Characters.push_back(Character(CharacterString));
+			ReturnValue.m_Characters.push_back(Character(CharacterString));
 		}
 
 		for(const auto& CurSection : Sections)
 		{
 			Section NewSection;
-			NewSection.Body = CurSection;
+			NewSection.m_Body = CurSection;
 
-			for(const auto& CurLine : NewSection.Body)
+			for(const auto& CurLine : NewSection.m_Body)
 			{
 				if(CurLine.find(':') != -1)
 				{
@@ -52,7 +52,7 @@ namespace NTree
 
 					ParseDialogue(CurLine, &CharacterName, &Speech);
 
-					NewSection.Dialogue.push_back(Dialogue(ReturnValue.GetCharacterByName(CharacterName), Speech));
+					NewSection.m_Dialogue.push_back(Dialogue(ReturnValue.GetCharacterByName(CharacterName), Speech));
 				}
 				else
 				{
@@ -60,12 +60,12 @@ namespace NTree
 					std::vector<std::string> Parameters;
 
 					ParseFunction(CurLine, &FunctionID, &Parameters);
-
-					NewSection.FunctionCalls.push_back(Function(FunctionID, Parameters));
+					NewSection.m_FunctionCalls.push_back(Function(FunctionID, Parameters));
 				}
 			}
 
-			ReturnValue.Sections.push_back(NewSection);
+			NewSection.m_OwningTree = &ReturnValue;
+			ReturnValue.m_Sections.push_back(NewSection);
 		}
 
 		return ReturnValue;
@@ -73,7 +73,7 @@ namespace NTree
 
 	void TreeParser::RemoveEmptyLines(std::vector<std::string>& Lines)
 	{
-		for(int i = Lines.size() - 1; i >= 0; i--)
+		for(int i = static_cast<int>(Lines.size()) - 1; i >= 0; i--)
 		{
 			if(Lines[i].length() <= 1 || Lines[i].find("//") != -1)
 			{
@@ -190,7 +190,7 @@ namespace NTree
 
 	void TreeParser::ParseDialogue(const std::string& Line, std::string* Character, std::string* Speech)
 	{
-		const int NameEndIndex = Line.find(':');
+		const size_t NameEndIndex = Line.find(':');
 
 		if(NameEndIndex != -1)
 		{
@@ -198,9 +198,9 @@ namespace NTree
 		}
 
 		const std::string SpeechSection = Line.substr(NameEndIndex + 1, Line.length() - NameEndIndex);
-		int SpeechStartIndex = -1;
+		size_t SpeechStartIndex = -1;
 
-		for(int i = 0; i < SpeechSection.length(); i++)
+		for(size_t i = 0; i < SpeechSection.length(); i++)
 		{
 			if(SpeechSection[i] != ' ')
 			{
@@ -218,7 +218,7 @@ namespace NTree
 
 	void TreeParser::ParseFunction(const std::string& Line, std::string* Function, std::vector<std::string>* Parameters)
 	{
-		const int FunctionEndIndex = Line.find('(');
+		const size_t FunctionEndIndex = Line.find('(');
 
 		if(FunctionEndIndex != -1)
 		{
@@ -241,7 +241,7 @@ namespace NTree
 	{
 		std::string ReturnValue = Str;
 
-		for(int i = Str.size() - 1; i >= 0; i--)
+		for(int i = static_cast<int>(Str.size()) - 1; i >= 0; i--)
 		{
 			if(Str[i] == ' ')
 			{

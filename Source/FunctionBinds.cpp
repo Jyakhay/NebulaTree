@@ -3,15 +3,15 @@
 namespace NTree
 {
 
-    void FunctionBinder::ExecuteFunction(const std::string Function, const std::vector<std::string>& Arguments)
+    void FunctionBinder::ExecuteFunction(const std::string& Function, Tree* OwningTree, const std::vector<std::string>& Arguments)
     {
         if(m_Functions.find(Function) != m_Functions.end())
         {
-            m_Functions.at(Function)(Arguments);
+            m_Functions.at(Function)(OwningTree, Arguments);
         }
     }
 
-    void FunctionBinder::BindFunction(const std::string& FunctionID, std::function<void(std::vector<std::string>)> Function)
+    void FunctionBinder::BindFunction(const std::string& FunctionID, CallbackFunction Function)
     {
         m_Functions.emplace(FunctionID, Function);
     }
